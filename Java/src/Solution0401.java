@@ -47,8 +47,19 @@ public class Solution0401 {
             helper(res, n-1, hour, min + MINS[i], HOURS.length, i+1);
     }
 
-    //核心思想是DFS加Memory，记录下来n个1的数字可能性
+    //这是Stefan Pochmann的方法，核心思想是，将小时和分钟进行Hash编码(hour占据高4位，minute占据低6位)
+    //然后计算数字其中1的个数是否等于预想值，真是TM太聪明了！！！
     public List<String> readBinaryWatch0(int num) {
+        List<String> times = new ArrayList<>();
+        for (int h=0; h<12; h++)
+            for (int m=0; m<60; m++)
+                if (Integer.bitCount(h * 64 + m) == num)
+                    times.add(String.format("%d:%02d", h, m));
+        return times;
+    }
+
+    //核心思想是DFS加Memory，记录下来n个1的数字可能性
+    public List<String> readBinaryWatch1(int num) {
         List<String> result = new LinkedList<>();
         if(num > 8) return result;
         List<Integer>[] map = new List[7];
